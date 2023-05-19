@@ -1,0 +1,50 @@
+@use "../abstracts/variables" as var;
+@use "../abstracts/mixins" as m;
+
+// Navbar
+.navbar__container {
+  @include m.media-query(min, var.$breakpoint-lg) {
+    max-width: none !important;
+    padding: 24px 136px 37px 136px !important;
+  }
+
+  @include m.media-query(max, var.$breakpoint-lg) {
+    & { padding: 24px 16px 32px 16px !important; }
+  }
+}
+
+.navbar__logo {
+  width: 100px;
+  height: 34px;
+  background: #0D28A6;
+}
+
+.navbar__items {
+  gap: 32px;
+}
+
+.navbar__link {
+  @include m.typography(400, 14px, 20px, normal, var.$color-black);
+  text-decoration: none;
+
+  &:hover {
+    font-weight: 500;
+    color: black;
+  }
+}
+
+// Offcanvas
+.offcanvas__items {
+  gap: 16px;
+}
+
+.offcanvas__label,
+.offcanvas__link {
+  @include m.typography(400, 14px, 20px, normal, var.$color-black);
+  text-decoration: none;
+
+  &:hover {
+    font-weight: 500;
+    color: black;
+  }
+}

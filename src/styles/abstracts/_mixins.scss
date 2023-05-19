@@ -1,0 +1,31 @@
+@use "../abstracts/variables" as var;
+
+@mixin media-query($width-type, $size) {
+  @if ($width-type == min) {
+    @media screen and (min-width: $size) { @content; }
+  } @else if ($width-type == max) {
+    @media screen and (max-width: $size) { @content; }
+  } @else if ($width-type == minmax) {
+    @media screen and (min-width: $size) and (max-width: $size) { @content; }
+  }
+}
+
+@mixin typography(
+  $font-weight, 
+  $font-size, 
+  $line-height, 
+  $letter-spacing,
+  $color
+) {
+  font-weight: $font-weight;
+  font-size: $font-size;
+  line-height: $line-height;
+  letter-spacing: $letter-spacing;
+  color: $color;
+}
+
+@mixin button($padding, $background-color, $color) {
+  padding: $padding;
+  background-color: $background-color;
+  color: $color;
+}

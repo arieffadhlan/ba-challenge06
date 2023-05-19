@@ -1,0 +1,20 @@
+@use "../abstracts/variables" as var;
+@use "../abstracts/mixins" as m;
+
+.btn-cta {
+  @include m.button(8px 12px, var.$color-green, var.$color-white);
+  @include m.typography(400, 14px, 20px, normal, var.$color-white);
+  border: 1px solid transparent;
+  border-radius: 2px;
+  outline: none;
+
+  &:hover {
+    filter: brightness(90%);
+    color: var.$color-white;
+  }
+
+  &:disabled {
+    pointer-events: none;
+    background-color: rgba(92, 184, 95, 0.7);
+  }
+}
