@@ -21,13 +21,13 @@ const FindCarForm = () => {
   const { filterCars } = carSlice.actions;
   const [backdrop, setBackdrop] = useState(false);
   const backdropRef = useRef(null);
-  const { register, reset, handleSubmit, formState: { errors }} = useForm({ 
+  const { register, handleSubmit, formState: { errors }} = useForm({ 
     resolver: yupResolver(formSchema),
     defaultValues: {
       availableAt: "",
       capacity: "",
-      driverType: "",
-      pickUpTime: ""
+      driverType: "default",
+      pickUpTime: "default"
     }
   });
 
@@ -56,12 +56,6 @@ const FindCarForm = () => {
     }));
 
     setBackdrop(false);
-    reset({
-      availableAt: "",
-      capacity: "",
-      driverType: "",
-      pickUpTime: ""
-    });
   }
 
   return (
@@ -73,7 +67,7 @@ const FindCarForm = () => {
             <div className="form-field">
               <label htmlFor="driverType" className="form-input-label">Tipe Driver</label>
               <select {...register("driverType", { required: true })} name="driverType" id="driverType" className="form-select__field" >
-                <option selected disabled>
+                <option value="default" disabled>
                   Pilih Tipe Driver
                 </option>
                 <option value="Dengan Sopir">
@@ -92,7 +86,7 @@ const FindCarForm = () => {
               <label htmlFor="pickUpTime" className="form-input-label">Waktu Jemput/Ambil</label>
               <div className="form-field__input">
                 <select {...register("pickUpTime", { required: true })} name="pickUpTime" id="pickUpTime" className="form-select__field" >
-                  <option>
+                  <option value="default" disabled>
                     Pilih Waktu
                   </option>
                   <option value="08:00">
