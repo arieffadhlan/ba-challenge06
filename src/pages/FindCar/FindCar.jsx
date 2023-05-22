@@ -6,10 +6,10 @@ import fetchCars from "@/store/actions/carAction";
 import { getCars, getCarsStatus, getFilteredCars, getFilteredCarsStatus } from "@/store/reducers/carReducer";
 
 import CarCard from "@/components/CarCard";
+import SkeletonCard from "@/components/SkeletonCard";
 import FindCarForm from "@/pages/FindCar/FindCarForm";
 
 import heroCar from "@/assets/images/hero.png";
-import SkeletonCard from "@/components/SkeletonCard";
 
 const FindCar = () => {
   const dispatch = useDispatch();
