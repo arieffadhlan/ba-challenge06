@@ -4,8 +4,8 @@ import fetchCars from "@/store/actions/carAction";
 const initialState = {
   cars: [],
   filteredCars: [],
-  status: "idle",
-  filteredCarsStatus: "idle"
+  fetchStatus: "idle",
+  fetchFilteredCarsStatus: "idle"
 }
 
 export const carSlice = createSlice({
@@ -24,28 +24,28 @@ export const carSlice = createSlice({
         }
       });
 
-      if (carFilterResult.length === 0) state.filteredCarsStatus = "failed";
-      state.filteredCarsStatus = "succeeded"
+      if (carFilterResult.length === 0) state.fetchFilteredCarsStatus = "failed";
+      state.fetchFilteredCarsStatus = "succeeded"
       state.filteredCars = carFilterResult;
     }
   },
   extraReducers: (builder) => {
     builder.addCase(fetchCars.pending, (state) => {
-      state.status = "loading";
+      state.fetchStatus = "loading";
     });
     builder.addCase(fetchCars.fulfilled, (state, action) => {
-      state.status = "succeeded";
+      state.fetchStatus = "succeeded";
       state.cars = [...action.payload];
     });
     builder.addCase(fetchCars.rejected, (state) => {
-      state.status = "failed";
+      state.fetchStatus = "failed";
     });
   }
 });
 
 export const getCars = (state) => state.cars.cars;
-export const getCarsStatus = (state) => state.cars.status;
+export const getCarsStatus = (state) => state.cars.fetchStatus;
 export const getFilteredCars = (state) => state.cars.filteredCars;
-export const getFilteredCarsStatus = (state) => state.cars.filteredCarsStatus;
+export const getFilteredCarsStatus = (state) => state.cars.fetchFilteredCarsStatus;
 
 export default carSlice.reducer;

@@ -18,18 +18,18 @@ const SkeletonCard = () => {
             <Skeleton count={3} />
           </p>
         </div>
-        <div className="cars-card__detail d-flex flex-column">
-          <div className="cars-card__detail-capacity d-flex align-items-center">
+        <div className="cars-card__detail d-flex flex-column w-100">
+          <div className="cars-card__detail-capacity d-flex align-items-center gap-2">
             <Skeleton width={20} height={20} circle={true} />
-            <Skeleton width={20} height={20} />
+            <Skeleton containerClassName="w-100" width="100%" height={20} />
           </div>
-          <div className="cars-card__detail-transmission d-flex align-items-center">
+          <div className="cars-card__detail-transmission d-flex align-items-center gap-2">
             <Skeleton width={20} height={20} circle={true} />
-            <Skeleton width={20} height={20} />
+            <Skeleton containerClassName="w-100" width="100%" height={20} />
           </div>
-          <div className="cars-card__detail-year d-flex align-items-center">
+          <div className="cars-card__detail-year d-flex align-items-center gap-2">
             <Skeleton width={20} height={20} circle={true} />
-            <Skeleton width={20} height={20} />
+            <Skeleton containerClassName="w-100" width="100%" height={20} />
           </div>
         </div>
         <Skeleton height={38} />

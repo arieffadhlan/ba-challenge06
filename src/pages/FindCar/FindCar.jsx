@@ -1,22 +1,23 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Col, Container } from "react-bootstrap";
 
 import fetchCars from "@/store/actions/carAction";
-import { getCars, getFilteredCars, getFilteredCarsStatus } from "@/store/reducers/carReducer";
+import { getCars, getCarsStatus, getFilteredCars, getFilteredCarsStatus } from "@/store/reducers/carReducer";
 
 import CarCard from "@/components/CarCard";
 import FindCarForm from "@/pages/FindCar/FindCarForm";
 
 import heroCar from "@/assets/images/hero.png";
+import SkeletonCard from "@/components/SkeletonCard";
 
 const FindCar = () => {
   const dispatch = useDispatch();
   const cars = useSelector(getCars);
+  const fetchCarsStatus = useSelector(getCarsStatus);
   const filteredCars = useSelector(getFilteredCars);
-  const filteredCarsStatus = useSelector(getFilteredCarsStatus);
+  const fetchFilteredCarsStatus = useSelector(getFilteredCarsStatus);
   const [data, setData] = useState([]);
-  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     dispatch(fetchCars());
@@ -27,11 +28,10 @@ const FindCar = () => {
   }, [cars]);
 
   useEffect(() => {
-    if (filteredCarsStatus === "succeeded") {
+    if (fetchFilteredCarsStatus === "succeeded") {
       setData(filteredCars);
     }
-  }, [data, filteredCars, filteredCarsStatus]);
-
+  }, [filteredCars, fetchFilteredCarsStatus]);
 
   return (
     <>
@@ -53,7 +53,10 @@ const FindCar = () => {
       </Container>
       <Container className="cars-container global-container">
         <div className="cars-cards">
-          {data.map((item) => <CarCard key={item.id} cars={item} /> )}
+          {fetchCarsStatus === "loading" 
+            ? Array(25).fill().map((_, index) => <SkeletonCard key={index+1} />)
+            : data.map((item) => <CarCard key={item.id} cars={item} /> )
+          }
         </div>
       </Container>
     </>
