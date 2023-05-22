@@ -1,12 +1,14 @@
 # Challenge Chapter 6
-Repository ini dibuat untuk memenuhi challenge chapter 5 dari Studi Independen Binar Academy.
+Repository ini dibuat untuk memenuhi challenge chapter 6 dari Studi Independen Binar Academy.
 
 ## Tech Stack
 - React.js
 - Redux
 - Redux Toolkit
+- React Loading Skeleton
 - React Hook Form
 - Yup
+- Axios
 - Sass
 - Bootstrap
 - React Slick
