@@ -1,97 +1,122 @@
-import { useState } from "react";
-import { carSlice } from "@/store/reducers/carReducer";
-import usersIcon from "@/assets/icons/forms/users.svg";
+import { useForm } from "react-hook-form";
 import { useDispatch } from "react-redux";
+import * as yup from "yup";
+import { yupResolver } from "@hookform/resolvers/yup";
+
+import { carSlice } from "@/store/reducers/carReducer";
+import { driverTypeOptions, pickUpTimeOptions } from "@/constants/data/select-options";
+
+import usersIcon from "@/assets/icons/forms/users.svg";
+
+const formSchema = yup.object().shape({
+  availableAt: yup.string().required("Tanggal wajib diisi."),
+  capacity: yup.string().required("Jumlah penumpang wajib diisi."),
+  driverType: yup.string().oneOf(driverTypeOptions, "Tipe driver wajib dipilih.").required(),
+  pickUpTime: yup.string().oneOf(pickUpTimeOptions, "Waktu jemput wajib dipilih.").required()
+})
 
 const FindCarForm = () => {
   const dispatch = useDispatch();
   const { filterCars } = carSlice.actions;
-  const [formData, setFormData] = useState({
-    driverType: "",
-    availableAt: "",
-    pickUpTime: "",
-    capacity: "",
+  const { 
+    register, 
+    reset,
+    handleSubmit, 
+    formState: { errors }
+  } = useForm({ 
+    resolver: yupResolver(formSchema),
+    defaultValues: {
+      availableAt: "",
+      capacity: "",
+      driverType: "",
+      pickUpTime: ""
+    }
   });
 
-  const handleChange = (event) => {
-    const { name, value } = event.target;
-    setFormData(({
-      ...formData,
-      [name]: value
-    }));
-  }
-
-  const handleSubmit = (event) => {
-    event.preventDefault();
-
-    if (!formData.driverType || !formData.availableAt || !formData.pickUpTime) {
-      alert("Anda diharapkan mengisi semua form!");
-      return;
-    }
-
-    const dateTime = new Date(`${formData.availableAt} ${formData.pickUpTime}`);
-    const capacity = isNaN(parseInt(formData.capacity)) ? 0 : parseInt(formData.capacity);
+  const handleOnSubmit = (data) => {
+    const {availableAt, pickUpTime, capacity} = data;
+    const dateTime = new Date(`${availableAt} ${pickUpTime}`);
+    const carCapacity = parseInt(capacity) < 0 ? 0 : parseInt(capacity);
 
     dispatch(filterCars({
-      ...formData,
       dateTime,
-      capacity
+      capacity: carCapacity
     }));
+
+    reset({
+      availableAt: "",
+      capacity: "",
+      driverType: "",
+      pickUpTime: ""
+    })
   }
 
   return (
-    <form onSubmit={handleSubmit} className="form-container">
-      <div className="form-field">
-        <label htmlFor="driverType" className="form-input-label">Tipe Driver</label>
-        <select onChange={handleChange} value={formData.driverType} name="driverType" id="driverType" className="form-select__field" >
-          <option>
-            Pilih Tipe Driver
-          </option>
-          <option value="Dengan Sopir">
-            Dengan Sopir
-          </option>
-          <option value="Tanpa Sopir (Lepas Kunci)">
-            Tanpa Sopir (Lepas Kunci)
-          </option>
-        </select>
-      </div>
-      <div className="form-field">
-        <label htmlFor="availableAt" className="form-input-label">Tanggal</label>
-        <input type="date" onChange={handleChange} value={formData.availableAt} name="availableAt" id="availableAt" className="form-input" />
-      </div>
-      <div className="form-field">
-        <label htmlFor="pickUpTime" className="form-input-label">Waktu Jemput/Ambil</label>
-        <div className="form-field__input">
-          <select onChange={handleChange} value={formData.pickUpTime} name="pickUpTime" id="pickUpTime" className="form-select__field" >
+    <form onSubmit={handleSubmit(handleOnSubmit)} className="form-container">
+      <div className="form-field__container">
+        <div className="form-field">
+          <label htmlFor="driverType" className="form-input-label">Tipe Driver</label>
+          <select {...register("driverType", { required: true })} name="driverType" id="driverType" className="form-select__field" >
             <option>
-              Pilih Waktu
+              Pilih Tipe Driver
             </option>
-            <option value="08:00">
-              08.00 WIB
+            <option value="Dengan Sopir">
+              Dengan Sopir
             </option>
-            <option value="09:00">
-              09.00 WIB
-            </option>
-            <option value="10:00">
-              10.00 WIB
-            </option>
-            <option value="11:00">
-              11.00 WIB
-            </option>
-            <option value="12:00">
-              12.00 WIB
+            <option value="Tanpa Sopir (Lepas Kunci)">
+              Tanpa Sopir (Lepas Kunci)
             </option>
           </select>
         </div>
-      </div>
-      <div className="form-field">
-        <label htmlFor="capacity" className="form-input-label">Jumlah Penumpang (optional)</label>
-        <div className="form-field__input">
-          <input type="text" onChange={handleChange} value={formData.capacity} name="capacity" id="capacity" className="form-input" placeholder="Jumlah Penumpang" />
-          <img src={usersIcon} alt="pickUpTime" className="form-input__icon" />
+        <div className="form-field">
+          <label htmlFor="availableAt" className="form-input-label">Tanggal</label>
+          <input {...register("availableAt", { required: true })} type="date" name="availableAt" id="availableAt" className="form-input" />
         </div>
+        <div className="form-field">
+          <label htmlFor="pickUpTime" className="form-input-label">Waktu Jemput/Ambil</label>
+          <div className="form-field__input">
+            <select {...register("pickUpTime", { required: true })} name="pickUpTime" id="pickUpTime" className="form-select__field" >
+              <option>
+                Pilih Waktu
+              </option>
+              <option value="08:00">
+                08.00 WIB
+              </option>
+              <option value="09:00">
+                09.00 WIB
+              </option>
+              <option value="10:00">
+                10.00 WIB
+              </option>
+              <option value="11:00">
+                11.00 WIB
+              </option>
+              <option value="12:00">
+                12.00 WIB
+              </option>
+            </select>
+          </div>
+        </div>
+        <div className="form-field">
+          <label htmlFor="capacity" className="form-input-label">Jumlah Penumpang (optional)</label>
+          <div className="form-field__input">
+            <input {...register("capacity", { required: true })} type="number" name="capacity" id="capacity" className="form-input" placeholder="Jumlah Penumpang" />
+            <img src={usersIcon} alt="pickUpTime" className="form-input__icon" />
+          </div>
+        </div>
+        <button className="btn-cta align-self-end text-nowrap">Cari Mobil</button>
       </div>
-      <button className="btn-cta align-self-end text-nowrap">Cari Mobil</button>
+      {Object.keys(errors).length !== 0 && (
+        <div className="form-field__error-container">
+          <span className="form-field__error">Terjadi kesalahan:</span>
+          <ul className="form-field__error-list">
+            {errors.driverType?.message && <li className="form-field__error">{errors.driverType.message}</li>}
+            {errors.availableAt?.message && <li className="form-field__error">{errors.availableAt.message}</li>}
+            {errors.pickUpTime?.message && <li className="form-field__error">{errors.pickUpTime.message}</li>}
+            {errors.capacity?.message && <li className="form-field__error">{errors.capacity.message}</li>}
+          </ul>
+        </div>
+      )}
     </form>
   )
 }

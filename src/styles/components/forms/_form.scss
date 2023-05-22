@@ -2,6 +2,12 @@
 @use "../../abstracts/mixins" as m;
 
 .form-container {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.form-field__container {
   display: grid;
   gap: 16px;
 
@@ -27,4 +33,14 @@
   gap: 4px;
 
   &__input { position: relative; }
+}
+
+.form-field__error-list {
+  list-style: disc;
+  padding-left: 18px;
+  margin-bottom: 0;
+}
+
+.form-field__error {
+  @include m.typography(500, 14px, 20px, normal, var.$color-red);
 }

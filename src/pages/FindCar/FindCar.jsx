@@ -2,8 +2,8 @@ import { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Col, Container } from "react-bootstrap";
 
-import { getCarList } from "@/store/actions/carAction";
-import { getCars, getCarsStatus, getFilteredCars } from "@/store/reducers/carReducer";
+import fetchCars from "@/store/actions/carAction";
+import { getCars, getFilteredCars, getFilteredCarsStatus } from "@/store/reducers/carReducer";
 
 import CarCard from "@/components/CarCard";
 import FindCarForm from "@/pages/FindCar/FindCarForm";
@@ -14,19 +14,18 @@ const FindCar = () => {
   const dispatch = useDispatch();
   const cars = useSelector(getCars);
   const filteredCars = useSelector(getFilteredCars);
-  const filteredCarsStatus = useSelector(getCarsStatus);
+  const filteredCarsStatus = useSelector(getFilteredCarsStatus);
   const [data, setData] = useState([]);
   const [backdrop, setBackdrop] = useState(false);
-  const backdropRef = useRef();
+  const backdropRef = useRef(null);
 
   useEffect(() => {
-    dispatch(getCarList());
+    dispatch(fetchCars());
   }, [dispatch]);
 
   useEffect(() => {
     setData(cars);
   }, [cars]);
-  console.log(data);
 
   useEffect(() => {
     const handler = (event) => {
@@ -41,8 +40,9 @@ const FindCar = () => {
   useEffect(() => {
     if (filteredCarsStatus === "succeeded") {
       setData(filteredCars);
+      backdropRef.current = null;
     } else {
-      console.log("error");
+      // console.log("error");
     }
   }, [data, filteredCars, filteredCarsStatus]);
 

@@ -4,7 +4,7 @@ import { getRandomInt } from "@/utils/getRandomInt";
 
 const API = "https://raw.githubusercontent.com/fnurhidayat/probable-garbanzo/main/data/cars.min.json";
 
-export const getCarList = createAsyncThunk("cars/getCarList", async () => {
+const fetchCars = createAsyncThunk("cars/fetchCars", async () => {
   try {
     const response = await axios.get(API);
     const populateCars = await response.data.map((car) => {
@@ -22,3 +22,5 @@ export const getCarList = createAsyncThunk("cars/getCarList", async () => {
     return error.message;
   }
 });
+
+export default fetchCars;

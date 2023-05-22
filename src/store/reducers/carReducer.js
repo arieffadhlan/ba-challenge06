@@ -1,11 +1,11 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { getCarList } from "@/store/actions/carAction";
+import fetchCars from "@/store/actions/carAction";
 
 const initialState = {
   cars: [],
   filteredCars: [],
   status: "idle",
-  statusFilter: "idle"
+  filteredCarsStatus: "idle"
 }
 
 export const carSlice = createSlice({
@@ -24,28 +24,28 @@ export const carSlice = createSlice({
         }
       });
 
-      if (carFilterResult.length === 0) state.statusFilter = "failed";
-      state.statusFilter = "succeeded"
+      if (carFilterResult.length === 0) state.filteredCarsStatus = "failed";
+      state.filteredCarsStatus = "succeeded"
       state.filteredCars = carFilterResult;
     }
   },
   extraReducers: (builder) => {
-    builder.addCase(getCarList.pending, (state) => {
+    builder.addCase(fetchCars.pending, (state) => {
       state.status = "loading";
     });
-    builder.addCase(getCarList.fulfilled, (state, action) => {
+    builder.addCase(fetchCars.fulfilled, (state, action) => {
       state.status = "succeeded";
       state.cars = state.cars.concat(action.payload);
     });
-    builder.addCase(getCarList.rejected, (state, action) => {
+    builder.addCase(fetchCars.rejected, (state) => {
       state.status = "failed";
-      state.errorMessage = action.payload;
     });
   }
 });
 
 export const getCars = (state) => state.cars.cars;
+export const getCarsStatus = (state) => state.cars.status;
 export const getFilteredCars = (state) => state.cars.filteredCars;
-export const getCarsStatus = (state) => state.cars.statusFilter;
+export const getFilteredCarsStatus = (state) => state.cars.filteredCarsStatus;
 
 export default carSlice.reducer;
