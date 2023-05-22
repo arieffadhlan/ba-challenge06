@@ -35,7 +35,7 @@ export const carSlice = createSlice({
     });
     builder.addCase(fetchCars.fulfilled, (state, action) => {
       state.status = "succeeded";
-      state.cars = state.cars.concat(action.payload);
+      state.cars = [...action.payload];
     });
     builder.addCase(fetchCars.rejected, (state) => {
       state.status = "failed";

@@ -24,6 +24,11 @@
   @include m.media-query(max, var.$breakpoint-2sm) {
     grid-template-columns: repeat(1, minmax(0, 1fr));
   }
+
+  & > :last-child {
+    @include m.media-query(max, var.$breakpoint-xl) { grid-column: span 2 / span 2; }
+    @include m.media-query(max, var.$breakpoint-2sm) { grid-column: span 1 / span 1; }
+  }
 }
 
 .form-field {

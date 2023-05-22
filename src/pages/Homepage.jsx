@@ -7,7 +7,7 @@ import Accordion from "react-bootstrap/Accordion";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 
-import { whyUsContents, faqs, testimonials } from "@/constants/data/homepage";
+import { whyUsContents, faqs, testimonials } from "@/constants/homepage";
 import WhyUsCard from "@/components/WhyUsCard";
 import TestimonialCard from "@/components/TestimonialCard";
 
